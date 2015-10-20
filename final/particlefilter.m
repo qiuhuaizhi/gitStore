@@ -18,8 +18,8 @@ R = 1e-4;                   % EKF's measurement noise variance.
 Q = 3/4;                    % EKF's process noise variance.
 P0 = 3/4;                   % EKF's initial variance of the states.
 
-N = 100;                     % Number of particles.
-
+N = 1000;                     % Number of particles.
+M = 264;                      % Number of sensors.
 
 Q_pfekf = 10*3/4;
 R_pfekf = 1e-1;
@@ -36,9 +36,11 @@ xpf = zeros(T,1);
 
 % GENERATE THE DATA:
 % ==================
-
-x = zeros(T,1);
-y = zeros(T,1);
+mu = [0 0 0.01 0.01]';
+Cu = diag([10,10,0.1,0.1],0);
+x0 = mvnrnd(mu,Cu,1);
+x = zeros(T,4);
+y = zeros(T,M);
 processNoise = zeros(T,1);
 measureNoise = zeros(T,1);
 x(1) = 1;                         % Initial state.
